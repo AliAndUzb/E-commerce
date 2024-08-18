@@ -38,10 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #Local apps:
+    #Installed libraries:
 
     'rest_framework',
     'drf_yasg',
+    'django_filters',  # django_filters.rest_framework.filterset idan voris olib uni product uchun customizatsiya qildik(qarang>>products.filters.py.ProductFilter)
+
+    # Local apps:
+
     'products',
 
 ]
@@ -128,3 +132,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 15
+}           # Project uchun umumiy paginatsiya
