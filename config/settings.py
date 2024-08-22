@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -42,7 +42,9 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'drf_yasg',
-    'django_filters',  # django_filters.rest_framework.filterset idan voris olib uni product uchun customizatsiya qildik(qarang>>products.filters.py.ProductFilter)
+    'django_filters',       # django_filters.rest_framework.filterset idan voris olib uni product uchun customizatsiya qildik(qarang>>products.filters.py.ProductFilter)
+    'djoser',            #E-mail bn bog'liq bo'lgan authentication larni kuchaytirib beradi
+    'rest_framework_simplejwt',
 
     # Local apps:
 
@@ -134,6 +136,45 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 15
-}           # Project uchun umumiy paginatsiya
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',         # Project uchun umumiy paginatsiya
+    'PAGE_SIZE': 15,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
+}
+
+SIMPLE_JWT = {
+    'ALGORITHM': 'HS256',
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=50),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=50),       #access tokenning amal qilish vaqti
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1)     #refresh tokenni yangilanish muddati
+    }
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'ali1997sher4400@gmail.com'
+EMAIL_HOST_PASSWORD = ""
+EMAIL_PORT = 587  #465
+EMAIL_USE_TLS = True
+
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'username/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SERIALIZERS': {},
+}
+
+# SWAGGER_SETTINGS = {
+#     'SECURITY_DEFINITIONS': {
+#         'JWT [Bearer {JWT}]': {
+#             'type': 'apiKey',
+#             'name': 'Authorization',
+#             'in': 'header'
+#         }
+#     },
+# }
