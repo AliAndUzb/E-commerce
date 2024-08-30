@@ -1,29 +1,7 @@
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-
-    class Meta:
-        ordering = ['name']
-
-    def __str__(self):
-        return self.name
-
-
-class Product(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(max_length=255)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
+from django.contrib.auth.models import User
+from .product import Product
 
 
 class Review(models.Model):
@@ -37,7 +15,9 @@ class Review(models.Model):
         return f"{self.product.name}-{self.rating}"
 
 class FlashSale(models.Model):
+
     """Productlarga skidka funksiyasi"""
+
     product = models.OneToOneField(Product, on_delete=models.CASCADE)
     discount_percentage = models.PositiveIntegerField(help_text="Chegirma miqdorini kiriting:")  # Kiritilgan qiymatni % sifatida oladi, ya'ni: 15 --> 15% skidka
     start_time = models.DateTimeField()
@@ -67,7 +47,9 @@ class FlashSale(models.Model):
 
 
 class ProductViewHistory(models.Model):
+
     """User tomonidan ko'rilgan productlarni vaqt asosida belgilaydi"""
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -75,6 +57,3 @@ class ProductViewHistory(models.Model):
     def __str__(self):
         time_stamp_str = self.timestamp.strftime('%d.%m.%Y %H:%M:%S')
         return f"{self.user} {self.product.name} ni {time_stamp_str} da ko'rgan "
-
-
-

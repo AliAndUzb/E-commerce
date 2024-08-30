@@ -7,4 +7,5 @@ admin.site.register(Category)
 admin.site.register(Review)
 admin.site.register(FlashSale)
 admin.site.register(ProductViewHistory)
+admin.site.register(Order)
 
